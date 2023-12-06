@@ -13,7 +13,7 @@ table = dynamodb.Table(dynamodbTableName)
 getMethod = 'GET'
 putMethod = 'PUT'
 healthPath = '/health'
-visitorCountPath = '/visitorCount'
+visitorCountPath = '/visitor-count'
 
 
 def lambda_handler(event, context):
@@ -25,8 +25,7 @@ def lambda_handler(event, context):
         response = buildResponse(200)
     elif httpMethod == getMethod and path == visitorCountPath:
         response = getVisitorCount('alexashworthdev')
-    elif httpMethod == putMethod and path == visitorCountPath:
-        response = updateVisitorCount()
+    # TODO: Implement PUT method here
 
 def getVisitorCount(siteName):
     try:
