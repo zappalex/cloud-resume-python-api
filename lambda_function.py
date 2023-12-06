@@ -1,7 +1,7 @@
 import json
 import boto3
 import logging
-from CustomEncoder import CustomEncoder
+from custom_encoder import CustomEncoder
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -26,6 +26,10 @@ def lambda_handler(event, context):
     elif httpMethod == getMethod and path == visitorCountPath:
         response = getVisitorCount('alexashworthdev')
     # TODO: Implement PUT method here
+    else:
+        response = buildResponse(404, 'Not Found')
+
+    return response
 
 def getVisitorCount(siteName):
     try:
@@ -43,7 +47,7 @@ def getVisitorCount(siteName):
 
 def updateVisitorCount():
     pass
-def buildResponse(statusCode, body):
+def buildResponse(statusCode, body=None):
     response = {
         'statusCode': statusCode,
         'headers': {
