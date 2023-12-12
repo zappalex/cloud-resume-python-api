@@ -26,7 +26,7 @@ def lambda_handler(event, context):
     elif httpMethod == getMethod and path == visitorCountPath:
         response = getVisitorCount('alexashworthdev')
     elif httpMethod == putMethod and path == visitorCountPath:
-        response = updateVisitorCount('alexashworthdev', event['queryStringParameters']['visitorCount'])
+        response = updateVisitorCount('alexashworthdev')
     else:
         response = buildResponse(404, 'Not Found')
 
@@ -46,22 +46,20 @@ def getVisitorCount(siteName):
     except:
         logger.exception('Custom Error Handling Here!')
 
-def updateVisitorCount(siteName, visitorCount):
+def updateVisitorCount(siteName):
     try:
         response = table.update_item(
             Key={
                 'site_name': siteName
             },
-            UpdateExpression='SET visitor_count = :val',
-            ExpressionAttributeValues={
-                ':val': visitorCount
-            },
+            UpdateExpression='SET visitor_count = visitor_count + :val',
+            ExpressionAttributeValues={':val': 1},
             ReturnValues="UPDATED_NEW"
         )
         body = {
             'Operation': 'UPDATE',
             'Message': 'SUCCESS',
-            'UpdatedAttributes': response
+            'UpdatedAttributes': response,
         }
         return buildResponse(200, body)
     except:
