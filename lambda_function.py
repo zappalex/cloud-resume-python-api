@@ -13,7 +13,7 @@ table = dynamodb.Table(dynamodbTableName)
 getMethod = 'GET'
 putMethod = 'PUT'
 healthPath = '/health'
-visitorCountPath = '/visitor-count'
+visitorCountPath = '/visitor_count'
 
 
 def lambda_handler(event, context):
@@ -44,7 +44,7 @@ def getVisitorCount(siteName):
         else:
             return buildResponse(404, {'Message': 'site_name: %s not found' % siteName})
     except:
-        logger.exception('Custom Error Handling Here!')
+        return buildResponse(500)
 
 def updateVisitorCount(siteName):
     try:
@@ -63,7 +63,7 @@ def updateVisitorCount(siteName):
         }
         return buildResponse(200, body)
     except:
-        logger.exception('Custom Error Handling Here!')
+        return buildResponse(500)
 def buildResponse(statusCode, body=None):
     response = {
         'statusCode': statusCode,
